@@ -1,15 +1,54 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import Socket from "../utilis/Socket";
+import Messages from "../messages/Messages";
+import InputContainer from "../input/Input";
 import "./chat.css";
 
+let socket;
 const Chat = () => {
+  const [messages, setmessages] = useState([]);
+  const [text, settext] = useState("");
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+
+    const name = queryParams.get("name").trim();
+
+    const room = queryParams.get("room").trim();
+
+    socket = Socket();
+
+    socket.emit("joinRoom", { name, room });
+
+    socket.on("message", (msg) => {
+      setmessages((messages) => messages.concat(msg));
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+
+    if (text.trim().length === 0) {
+      return;
+    }
+    socket.emit("chatMessage", text.trim());
+    settext("");
+    ref.current.focus();
+  };
+
+  const ref = useRef();
   return (
     <div className="chat-container">
       <header className="chat-header">
         <h1>
           <i className="fas fa-smile"></i> ChatCord
         </h1>
-        <Link exact to="/" classNameName="btn">
+        <Link to="/" className="btn">
           Leave Romm
         </Link>
       </header>
@@ -30,41 +69,14 @@ const Chat = () => {
             <li>Mike</li>
           </ul>
         </div>
-        <div className="chat-messages">
-          <div className="message">
-            <p className="meta">
-              Brad <span>9:12pm</span>
-            </p>
-            <p className="text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
-              repudiandae.
-            </p>
-          </div>
-          <div className="message">
-            <p className="meta">
-              Mary <span>9:15pm</span>
-            </p>
-            <p className="text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,
-              repudiandae.
-            </p>
-          </div>
-        </div>
+        <Messages messages={messages} />
       </main>
-      <div className="chat-form-container">
-        <form id="chat-form">
-          <input
-            id="msg"
-            type="text"
-            placeholder="Enter Message"
-            required
-            autocomplete="off"
-          />
-          <button className="btn">
-            <i className="fas fa-paper-plane"></i> Send
-          </button>
-        </form>
-      </div>
+      <InputContainer
+        sendMessage={sendMessage}
+        onchange={(e) => settext(e.target.value)}
+        text={text}
+        ref={ref}
+      />
     </div>
   );
 };

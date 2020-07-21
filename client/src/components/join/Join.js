@@ -1,12 +1,21 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import io from "socket.io-client";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import "./join.css";
 
 const Join = () => {
-  useEffect(() => {
-    const socket = io("http://localhost:5000");
-  }, []);
+  const [username, setusername] = useState("");
+  const [room, setroom] = useState("");
+  const history = useHistory();
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (username === "" || room === "") {
+      return;
+    }
+
+    history.push(`/chat-room?name=${username}&room=${room}`);
+  };
 
   return (
     <div className="join-container">
@@ -16,7 +25,7 @@ const Join = () => {
         </h1>
       </header>
       <main className="join-main">
-        <form action="chat.html">
+        <form onSubmit={submitHandler}>
           <div className="form-control">
             <label htmlFor="username">Username</label>
             <input
@@ -25,11 +34,16 @@ const Join = () => {
               id="username"
               placeholder="Enter username..."
               required
+              onChange={(e) => setusername(e.target.value)}
             />
           </div>
           <div className="form-control">
             <label htmlFor="room">Room</label>
-            <select name="room" id="room">
+            <select
+              name="room"
+              id="room"
+              onChange={(e) => setroom(e.target.value)}
+            >
               <option value="JavaScript">JavaScript</option>
               <option value="Python">Python</option>
               <option value="PHP">PHP</option>
@@ -38,11 +52,10 @@ const Join = () => {
               <option value="Java">Java</option>
             </select>
           </div>
-          <Link exact to="/chat-room">
-            <button type="submit" className="btn">
-              Join Chat
-            </button>
-          </Link>
+
+          <button type="submit" className="btn">
+            Join Chat
+          </button>
         </form>
       </main>
     </div>
