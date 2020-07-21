@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
-const InputContainer = ({ sendMessage, onchange, text, ref }) => {
+const InputContainer = ({ sendMessage }) => {
+  const [text, settext] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const message = text.trim().length;
+
+    if (message === 0) {
+      return;
+    }
+
+    sendMessage(message);
+    settext("");
+  };
+
   return (
     <div className="chat-form-container">
-      <form id="chat-form" onSubmit={sendMessage}>
+      <form id="chat-form" onSubmit={handleSubmit}>
         <input
           id="msg"
           type="text"
@@ -11,8 +25,7 @@ const InputContainer = ({ sendMessage, onchange, text, ref }) => {
           required
           value={text}
           autoComplete="off"
-          onChange={onchange}
-          ref={ref}
+          onChange={(e) => settext(e.target.value)}
         />
         <button type="submit" className="btn">
           <i className="fas fa-paper-plane"></i> Send

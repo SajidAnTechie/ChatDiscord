@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Socket from "../utilis/Socket";
 import Messages from "../messages/Messages";
@@ -8,7 +8,6 @@ import "./chat.css";
 let socket;
 const Chat = () => {
   const [messages, setmessages] = useState([]);
-  const [text, settext] = useState("");
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -30,18 +29,10 @@ const Chat = () => {
     };
   }, []);
 
-  const sendMessage = (e) => {
-    e.preventDefault();
-
-    if (text.trim().length === 0) {
-      return;
-    }
-    socket.emit("chatMessage", text.trim());
-    settext("");
-    ref.current.focus();
+  const sendMessage = (msg) => {
+    socket.emit("chatMessage", msg);
   };
 
-  const ref = useRef();
   return (
     <div className="chat-container">
       <header className="chat-header">
@@ -71,12 +62,7 @@ const Chat = () => {
         </div>
         <Messages messages={messages} />
       </main>
-      <InputContainer
-        sendMessage={sendMessage}
-        onchange={(e) => settext(e.target.value)}
-        text={text}
-        ref={ref}
-      />
+      <InputContainer sendMessage={sendMessage} />
     </div>
   );
 };
