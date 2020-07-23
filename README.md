@@ -1,1 +1,18 @@
-# This project is under development.
+> A real time chat application made with modern technologies, ReactJS, NodeJS, and Socketio.
+
+## App works as follow:
+
+- Join chat based on rooms like Js,Python,Java etc :thumbsup: :heavy_check_mark:
+- Send message to group in real time :outbox_tray: :inbox_tray:
+- Share Funny Emoji like facebook massenger :smile: :blush: :money_mouth_face:
+
+## Demo
+
+![one](assests/one.png)
+![one](assests/two.png)
+![one](assests/three.png)
+![one](assests/four.png)
+![one](assests/five.png)
+![one](assests/six.png)
+
+## Be sure give a star and forked :sweat_drops: :v:

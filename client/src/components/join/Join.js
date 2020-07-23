@@ -21,7 +21,7 @@ const Join = () => {
     <div className="join-container">
       <header className="join-header">
         <h1>
-          <i className="fas fa-smile"></i> ChatCord
+          <i className="fas fa-smile"></i> ChatDiscord
         </h1>
       </header>
       <main className="join-main">
@@ -44,6 +44,7 @@ const Join = () => {
               id="room"
               onChange={(e) => setroom(e.target.value)}
             >
+              <option value="JavaScript">...</option>
               <option value="JavaScript">JavaScript</option>
               <option value="Python">Python</option>
               <option value="PHP">PHP</option>
