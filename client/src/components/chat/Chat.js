@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Socket from "../utilis/Socket";
 import Messages from "../messages/Messages";
 import InputContainer from "../input/Input";
+import Users from "../users/Users";
 import "./chat.css";
 
 let socket;
@@ -59,11 +60,7 @@ const Chat = () => {
           <h3>
             <i className="fas fa-users"></i> Users
           </h3>
-          <ul id="users">
-            {users.map((user, index) => {
-              return <li key={index}>{user.name}</li>;
-            })}
-          </ul>
+          <Users users={users} />
         </div>
         <Messages messages={messages} />
       </main>
