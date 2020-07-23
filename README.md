@@ -8,11 +8,11 @@
 
 ## Demo
 
-![one](assests/one.png)
-![one](assests/two.png)
-![one](assests/three.png)
-![one](assests/four.png)
-![one](assests/five.png)
-![one](assests/six.png)
+![one](assests/one.PNG)
+![two](assests/two.PNG)
+![three](assests/three.PNG)
+![four](assests/four.PNG)
+![five](assests/five.PNG)
+![six](assests/six.PNG)
 
 ## Be sure give a star and forked :sweat_drops: :v:
