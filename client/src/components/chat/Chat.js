@@ -8,6 +8,8 @@ import "./chat.css";
 let socket;
 const Chat = () => {
   const [messages, setmessages] = useState([]);
+  const [room, setroom] = useState("");
+  const [users, setusers] = useState([]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -22,6 +24,11 @@ const Chat = () => {
 
     socket.on("message", (msg) => {
       setmessages((messages) => messages.concat(msg));
+    });
+
+    socket.on("roomUsers", ({ room, users }) => {
+      setroom(room);
+      setusers(users);
     });
 
     return () => {
@@ -48,16 +55,14 @@ const Chat = () => {
           <h3>
             <i className="fas fa-comments"></i> Room Name:
           </h3>
-          <h2 id="room-name">JavaScript</h2>
+          <h2 id="room-name">{room}</h2>
           <h3>
             <i className="fas fa-users"></i> Users
           </h3>
           <ul id="users">
-            <li>Brad</li>
-            <li>John</li>
-            <li>Mary</li>
-            <li>Paul</li>
-            <li>Mike</li>
+            {users.map((user, index) => {
+              return <li key={index}>{user.name}</li>;
+            })}
           </ul>
         </div>
         <Messages messages={messages} />

@@ -1,7 +1,12 @@
 const express = require("express");
 const colors = require("colors");
 const socketio = require("socket.io");
-const { userJoin, userLeave, getCurrentUser } = require("./utilis/users");
+const {
+  userJoin,
+  userLeave,
+  getCurrentUser,
+  getRoomUsers,
+} = require("./utilis/users");
 const formattedMessage = require("./utilis/messages");
 const app = express();
 
@@ -35,23 +40,32 @@ io.on("connection", (socket) => {
         formattedMessage("ChartCord", `${user.name} has joined the chat`)
       );
 
-    //Liten for chat message
-    socket.on("chatMessage", (msg) => {
-      console.log(msg);
-      const user = getCurrentUser(socket.id);
-
-      io.to(user.room).emit("message", formattedMessage(user.name, msg));
+    //get users and rooms info
+    io.to(user.room).emit("roomUsers", {
+      room: user.room,
+      users: getRoomUsers(user.room),
     });
+  });
+  //Liten for chat message
+  socket.on("chatMessage", (msg) => {
+    const user = getCurrentUser(socket.id);
 
-    //Runs when user disconnect
-    socket.on("disconnect", () => {
-      const user = userLeave(socket.id);
-      if (user) {
-        io.to(user.room).emit(
-          "message",
-          formattedMessage("ChartCord", `${user.name} has left the chat`)
-        );
-      }
-    });
+    io.to(user.room).emit("message", formattedMessage(user.name, msg));
+  });
+
+  //Runs when user disconnect
+  socket.on("disconnect", () => {
+    const user = userLeave(socket.id);
+    if (user) {
+      io.to(user.room).emit(
+        "message",
+        formattedMessage("ChartCord", `${user.name} has left the chat`)
+      );
+
+      io.to(user.room).emit("roomUsers", {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    }
   });
 });
