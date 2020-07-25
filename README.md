@@ -15,4 +15,33 @@
 ![five](assests/five.PNG)
 ![six](assests/six.PNG)
 
+## Project Setup
+
+```
+#install dependecies in server side
+cd server
+
+npm install
+
+#install dependecies in client side
+cd client
+
+npm install
+```
+
+## Run App
+
+```
+#Start the server
+cd server
+
+npm run dev
+
+#Start the client side app
+cd client
+
+npm start
+
+```
+
 ## Be sure give a star and forked :sweat_drops: :v:
